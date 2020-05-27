@@ -15,8 +15,8 @@ router.post('/register', (req, res, next) => {
   })
 
   User.addUser(newUser, (err, user) => {
-    if (err) res.json({success: false, msg: "User cannot be registered"})
-    res.json({success: true, user: user})
+    if (err) res.json({error: 404, success: false, msg: "User cannot be registered"})
+    res.json({error: 200, success: true, user: user})
   })
 })
 
@@ -26,13 +26,14 @@ router.post('/login', (req, res, next) => {
   let password = req.body.password
 
   User.findByUsername(username, (err, user) => {
-    if (err) res.json({success: false, msg: "User cannot be find"})
+    if (err) res.json({error: 404, success: false, msg: "User cannot be find"})
 
     User.comparePassword(password, user.password, (err, is_match) => {
-      if (err) res.json({success: false, msg: "Cannot be authenticate"})
+      if (err) res.json({error: 404, success: false, msg: "Cannot be authenticate"})
 
       if (!is_match) { 
         res.json({
+          error: 404,
           success: false, 
           msg: "Your password does not match this username"
         })
@@ -43,6 +44,7 @@ router.post('/login', (req, res, next) => {
       })
 
       res.json({
+        error: 200,
         success: true,
         token: "JWT " + token,
         user: {
