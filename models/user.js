@@ -20,7 +20,7 @@ let userSchema = mongoose.Schema({
 let User = module.exports = mongoose.model('User', userSchema)
 
 module.exports.findById = (id, callback) =>{
-    User.findById({id, callback})
+    User.find({_id: id}, callback)
 }
 
 module.exports.findByUsername = (username, callback) => {
