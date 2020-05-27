@@ -14,6 +14,11 @@ let userSchema = mongoose.Schema({
     },
     password: {
         type: String
+    },
+    role: { 
+        type: String, 
+        enum: ['admin', 'user'],
+        default: 'user'
     }
 })
 
@@ -25,6 +30,11 @@ module.exports.findById = (id, callback) =>{
 
 module.exports.findByUsername = (username, callback) => {
     const query = {username: username}
+    User.findOne(query, callback)
+}
+
+module.exports.findByEmail = (email, callback) => {
+    const query = {email: email}
     User.findOne(query, callback)
 }
 
@@ -44,4 +54,25 @@ module.exports.comparePassword = (candidate, hash, callback) => {
         if (err) throw err
         callback(null, is_match)
     })
+}
+
+module.exports.findAll = (callback) => {
+    User.find({}, callback)
+}
+
+module.exports.update = (email, update, callback) => {
+    const query = {email: email}
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) throw err
+        bcrypt.hash(update.password, salt, (err, hash) => {
+            if (err) throw err
+            update.password = hash
+            User.findOneAndUpdate(query, update, callback)
+        })
+    })
+}
+
+module.exports.delete = (email, callback) => {
+    const query = {email: email}
+    User.findOneAndRemove(query, callback)
 }
