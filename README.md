@@ -10,4 +10,4 @@ Run :
 You're ready to go
 
 
-Here are the endpoints : https://men-auth.hollyn.now.sh
+Here are the endpoints : https://men-auth-rjmv0wf5h.now.sh
